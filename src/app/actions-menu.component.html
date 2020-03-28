@@ -1,0 +1,5 @@
+<button (click)="startFullRowEdit()" [disabled]="isActionsMenuDisabled">EDIT</button>
+<button (click)="submit()" [disabled]="!isModeEdit || formGroup.pristine || formGroup.status !== 'VALID'" type="submit">
+  OK
+</button>
+<button (click)="cancel()" [disabled]="!isModeEdit">CANCEL</button>
