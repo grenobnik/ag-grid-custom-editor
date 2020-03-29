@@ -1,13 +1,14 @@
 import {Component} from '@angular/core';
 import {AppService, Car, CustomValidationResult} from './app.service';
 import {
+  CellFocusedEvent,
   CellMouseDownEvent,
   ColumnApi,
   GridApi,
   GridOptions,
   RowEditingStartedEvent,
   RowEditingStoppedEvent,
-  RowNode
+  RowNode,
 } from 'ag-grid-community';
 import {ActionsMenuComponent} from './actions-menu.component';
 import {FormControl, FormGroup, ValidationErrors} from '@angular/forms';
@@ -70,8 +71,13 @@ export class AppComponent {
     context: {
       parent: this,
     },
-    onCellMouseDown: (event: CellMouseDownEvent) => {
-      console.log('onCellMouseDown');
+    onCellFocused($event: CellFocusedEvent): void {
+      console.log('gridOptions.onCellFocused');
+      console.log($event);
+    },
+    onCellMouseDown: ($event: CellMouseDownEvent) => {
+      console.log('gridOptions.onCellMouseDown');
+      console.log($event);
     },
   };
   private asyncValidationErrors: { [key: string]: ValidationErrors } = {};
@@ -101,7 +107,7 @@ export class AppComponent {
               const errorFields = Object.keys(response.body);
               if (errorFields.includes('price')) {
                 this.formGroup.get('price').setErrors(response.body.price);
-                console.log(this.formGroup);
+                // console.log(this.formGroup);
               }
             } else {
               this.clearAllErrors();
@@ -135,13 +141,14 @@ export class AppComponent {
   }
 
   cancelEditing() {
-    // console.log('in AppComponent.cancelEditing()');
+    console.log('AppComponent.cancelEditing()');
     this.gridApi.stopEditing();
     this.rowNodeModif.setData(this.rowValueBeforeEditing);
   }
 
   onRowEditingStopped($event: RowEditingStoppedEvent) {
-    console.log('onRowEditingStopped');
+    console.log('AppComponent.onRowEditingStopped');
+    console.log($event);
     this.resetFormGroup();
     this.isEditorOpen = false;
   }
